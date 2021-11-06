@@ -22,18 +22,18 @@ import (
 	"github.com/thmeitz/ksqldb-go"
 )
 
-// migrateCmd represents the migrate command
-var migrateCmd = &cobra.Command{
-	Use:   "migrate",
-	Short: "migrate reads files and executes the statements",
+// downCmd represents the down command
+var downCmd = &cobra.Command{
+	Use:   "down",
+	Short: "down reads files and executes the statements",
 }
 
 func init() {
-	migrateCmd.Run = migrate
-	rootCmd.AddCommand(migrateCmd)
+	downCmd.Run = down
+	rootCmd.AddCommand(downCmd)
 }
 
-func migrate(cmd *cobra.Command, args []string) {
+func down(cmd *cobra.Command, args []string) {
 	setLogger()
 
 	host := viper.GetString("host")
@@ -57,7 +57,7 @@ func migrate(cmd *cobra.Command, args []string) {
 	// 		CREATE TABLE IF NOT EXISTS DOGS_BY_SIZE AS
 	// 			SELECT DOGSIZE AS DOG_SIZE, COUNT(*) AS DOGS_CT
 	// 			FROM DOGS WINDOW TUMBLING (SIZE 15 MINUTE)
-	// 			GROUP BY DOGSIZE;
+	// 			GROdown BY DOGSIZE;
 	// `); err != nil {
 	// 	log.Current.Error(err)
 	// 	os.Exit(-1)

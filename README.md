@@ -5,7 +5,7 @@ Migration tool for ksqlDB, which uses the [ksqldb-go](https://github.com/thmeitz
 ## Installation
 
 ```bash
-
+go install github.com/thmeitz/ksqldb-migrate
 ```
 
 ## Usage

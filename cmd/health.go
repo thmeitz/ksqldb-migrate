@@ -25,15 +25,15 @@ import (
 	"github.com/thmeitz/ksqldb-go"
 )
 
-// serverhealthCmd represents the serverhealth command
-var serverhealthCmd = &cobra.Command{
+// health represents the serverhealth command
+var health = &cobra.Command{
 	Use:   "health",
 	Short: "display the server health",
 }
 
 func init() {
-	serverhealthCmd.Run = serverhealth
-	rootCmd.AddCommand(serverhealthCmd)
+	health.Run = serverhealth
+	rootCmd.AddCommand(health)
 }
 
 func serverhealth(cmd *cobra.Command, args []string) {

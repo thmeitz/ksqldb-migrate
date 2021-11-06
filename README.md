@@ -122,6 +122,7 @@ make release github.com/thmeitz/ksqldb-migrate
 
 - [ ] Better error messages for KSQLParser (ksqldb-go)
 - [ ] Check CommandStatus and wait for successfull execution for each step (up/down migrations) (ksql-migrate + ksqldb-go)
+- [ ] Static linked binary
 
 ## License
 

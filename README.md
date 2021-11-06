@@ -12,7 +12,9 @@ go install github.com/thmeitz/ksqldb-migrate
 
 ### Create a `yaml` file
 
-Create a `test.yaml` file like this ([or use the file in the example directory](examples/test.yaml))
+Create a `dogs-migrations.yaml` file like this ()
+
+In further steps I'm using the [provided example](examples/test.yaml)
 
 ```yaml
 migrate:
@@ -55,13 +57,13 @@ migrate:
 ## Migrate Up
 
 ```bash
-ksql-migrate up -f example/test.yaml
+ksql-migrate up -f examples/test.yaml
 ```
 
 ## Migrate Down
 
 ```bash
-ksql-migrate down -f example/test.yaml
+ksql-migrate down -f examples/test.yaml
 ```
 
 Done.

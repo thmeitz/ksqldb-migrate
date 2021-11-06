@@ -10,7 +10,7 @@ go install github.com/thmeitz/ksqldb-migrate
 
 ## Usage
 
-### Create yaml file
+### Create a `yaml` file
 
 Create a `test.yaml` file like this ([or use the file in the example directory](examples/test.yaml))
 

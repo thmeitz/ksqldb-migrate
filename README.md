@@ -10,7 +10,13 @@ go install github.com/thmeitz/ksqldb-migrate
 
 ## Usage
 
-### Create the migration `yaml` file
+```bash
+ksqldb-migrate
+```
+
+![](ksqldb-migrate.png)
+
+### Migration File
 
 In further steps I'm using the [provided example](examples/test.yaml).
 
@@ -50,6 +56,8 @@ down:
 ```
 
 ## Migrate Up
+
+![](ksqldb-migrate-up.png)
 
 ```bash
 ksql-migrate up -f examples/test.yaml

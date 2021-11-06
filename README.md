@@ -2,6 +2,8 @@
 
 Migration tool for [ksqlDB](https://ksqldb.io), which uses the [ksqldb-go](https://github.com/thmeitz/ksqldb-go) client.
 
+⚠️ Disclaimer #1: This is a personal project and not supported or endorsed by Confluent.
+
 ## Installation
 
 ```bash

@@ -1,6 +1,6 @@
 # ksqldb-migrate
 
-Migration tool for ksqlDB, which uses the [ksqldb-go](https://github.com/thmeitz/ksqldb-go) client.
+Migration tool for [ksqlDB](https://ksqldb.io), which uses the [ksqldb-go](https://github.com/thmeitz/ksqldb-go) client.
 
 ## Installation
 

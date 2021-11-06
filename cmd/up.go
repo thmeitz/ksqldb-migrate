@@ -16,6 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
+	"os"
+
 	"github.com/Masterminds/log-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -42,8 +45,8 @@ func init() {
 		log.Current.Fatal(err)
 	}
 
-	upCmd.Flags().BoolP("parse", "p", true, "parse migration steps before executing")
-	if err := viper.BindPFlag("parse", upCmd.Flags().Lookup("parse")); err != nil {
+	upCmd.Flags().BoolP("preflight", "p", false, "preflight migration steps before executing (sql syntax check)")
+	if err := viper.BindPFlag("preflight", upCmd.Flags().Lookup("preflight")); err != nil {
 		log.Current.Fatal(err)
 	}
 }
@@ -55,6 +58,7 @@ func up(cmd *cobra.Command, args []string) {
 	user := viper.GetString("username")
 	password := viper.GetString("password")
 	file := viper.GetString("file")
+	preflight := viper.GetBool("preflight")
 
 	options := ksqldb.Options{
 		Credentials: ksqldb.Credentials{Username: user, Password: password},
@@ -74,18 +78,21 @@ func up(cmd *cobra.Command, args []string) {
 		log.Current.Fatal(err)
 	}
 
-	log.Current.Debugf("%v", migrate)
+	for idx, step := range migrate.Up {
+		currentIndex := idx + 1
+		log.Current.Debugw("processing", log.Fields{"step": currentIndex, "name": step.Name})
+		if preflight {
+			if err := client.ParseKSQL(step.Exec); err != nil {
+				log.Fatalf("error in step:%v, %v", currentIndex, errors.Unwrap(err))
+			}
 
-	// create the DOGS_BY_SIZE table
-	// if err := ksqldb.Execute(client,
-	// 	`
-	// 		CREATE TABLE IF NOT EXISTS DOGS_BY_SIZE AS
-	// 			SELECT DOGSIZE AS DOG_SIZE, COUNT(*) AS DOGS_CT
-	// 			FROM DOGS WINDOW TUMBLING (SIZE 15 MINUTE)
-	// 			GROUP BY DOGSIZE;
-	// `); err != nil {
-	// 	log.Current.Error(err)
-	// 	os.Exit(-1)
-	// }
+			log.Current.Debugw("preflight check", log.Fields{"step": currentIndex, "name": step.Name, "status": "ok"})
+			if err := ksqldb.Execute(client, step.Exec); err != nil {
+				log.Current.Error(err)
+				os.Exit(-1)
+			}
+		}
+	}
+
 	client.Close()
 }

@@ -25,7 +25,7 @@ import (
 // downCmd represents the down command
 var downCmd = &cobra.Command{
 	Use:   "down",
-	Short: "down reads files and executes the statements",
+	Short: "down reads the yaml file and executes the down steps",
 }
 
 func init() {

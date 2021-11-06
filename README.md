@@ -12,7 +12,7 @@ go install github.com/thmeitz/ksqldb-migrate
 
 ### Migrate up
 
-Create a `test.yaml` file like this (or use the file in the example directory)
+Create a `test.yaml` file like this ([or use the file in the example directory](examples/test.yaml))
 
 ```yaml
 migrate:

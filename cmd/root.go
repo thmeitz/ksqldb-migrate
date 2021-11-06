@@ -33,7 +33,7 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ksqldb-migrate",
-	Short: "ksqldb-migrate migration tool",
+	Short: "ksqldb-migrate migration tool for ksqlDB",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

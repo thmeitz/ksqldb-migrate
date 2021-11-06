@@ -25,7 +25,7 @@ import (
 // upCmd represents the up command
 var upCmd = &cobra.Command{
 	Use:   "up",
-	Short: "up reads files and executes the statements",
+	Short: "up reads the yaml file and executes the up steps",
 }
 
 func init() {

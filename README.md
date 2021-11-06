@@ -14,7 +14,7 @@ go install github.com/thmeitz/ksqldb-migrate
 ksqldb-migrate
 ```
 
-![](ksqldb-migrate.png)
+![](docs/ksqldb-migrate.png)
 
 ### Migration File
 
@@ -57,7 +57,7 @@ down:
 
 ## Migrate Up
 
-![](ksqldb-migrate-up.png)
+![](docs/ksqldb-migrate-up.png)
 
 ```bash
 ksql-migrate up -f examples/test.yaml

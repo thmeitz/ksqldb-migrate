@@ -80,6 +80,11 @@ ksql-migrate down -f examples/test.yaml
 
 Done.
 
+## TODO
+
+- [ ] Better error messages for KSQLParser (ksqldb-go)
+- [ ] Check CommandStatus and wait for successfull execution for each step (up/down migrations) (ksql-migrate + ksqldb-go)
+
 ## License
 
 [Apache License Version 2.0](LICENSE)

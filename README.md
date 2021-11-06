@@ -10,7 +10,7 @@ go install github.com/thmeitz/ksqldb-migrate
 
 ## Usage
 
-### Create a `yaml` file
+### Create the migration `yaml` file
 
 Create a `dogs-migrations.yaml`.
 

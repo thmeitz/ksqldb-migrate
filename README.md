@@ -58,7 +58,7 @@ Than run
 ksql-migrate up -f example/test.yaml
 ```
 
-## Migrate down - currently command not exists !!! TODO
+## Migrate down
 
 ```bash
 ksql-migrate down -f example/test.yaml

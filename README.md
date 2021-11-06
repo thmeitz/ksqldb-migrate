@@ -80,6 +80,10 @@ ksql-migrate down -f examples/test.yaml
 
 Done.
 
+## Docker Compose
+
+Same `docker-compose` file as for `ksqldb-go`
+
 ## TODO
 
 - [ ] Better error messages for KSQLParser (ksqldb-go)

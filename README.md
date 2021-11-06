@@ -82,7 +82,7 @@ Done.
 
 ## Docker Compose
 
-Same `docker-compose` file as for `ksqldb-go`
+Same `docker-compose` file as for [ksqldb-go](https://github.com/thmeitz/ksqldb-go/blob/main/examples/cobra-test/docker-compose.yml).
 
 ## TODO
 

@@ -61,15 +61,15 @@ ksql-migrate up -f examples/test.yaml
 Output
 
 ```bash
-INFO[0000] processing                                    name="create source connector dogs" step=1
-INFO[0000] preflight check                               name="create source connector dogs" status=ok step=1
-INFO[0000] processed                                     name="create source connector dogs" status=ok step=1
-INFO[0000] processing                                    name="create the dogs stream" step=2
-INFO[0000] preflight check                               name="create the dogs stream" status=ok step=2
-INFO[0000] processed                                     name="create the dogs stream" status=ok step=2
-INFO[0000] processing                                    name="create the DOGS_BY_SIZE table" step=3
-INFO[0000] preflight check                               name="create the DOGS_BY_SIZE table" status=ok step=3
-INFO[0000] processed                                     name="create the DOGS_BY_SIZE table" status=ok step=3
+INFO[0000] processing           name="create source connector dogs" step=1
+INFO[0000] preflight check      name="create source connector dogs" status=ok step=1
+INFO[0000] processed            name="create source connector dogs" status=ok step=1
+INFO[0000] processing           name="create the dogs stream" step=2
+INFO[0000] preflight check      name="create the dogs stream" status=ok step=2
+INFO[0000] processed            name="create the dogs stream" status=ok step=2
+INFO[0000] processing           name="create the DOGS_BY_SIZE table" step=3
+INFO[0000] preflight check      name="create the DOGS_BY_SIZE table" status=ok step=3
+INFO[0000] processed            name="create the DOGS_BY_SIZE table" status=ok step=3
 ```
 
 ## Migrate Down

@@ -1,0 +1,5 @@
+---
+loglevel: info
+logformat: text
+preflight: true
+host: http://localhost:8088

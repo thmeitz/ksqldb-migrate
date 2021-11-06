@@ -25,12 +25,26 @@ import (
 // downCmd represents the down command
 var downCmd = &cobra.Command{
 	Use:   "down",
-	Short: "down reads the yaml file and executes the down steps",
+	Short: "down reads the migration yaml file and executes the steps",
 }
 
 func init() {
 	downCmd.Run = down
 	rootCmd.AddCommand(downCmd)
+
+	downCmd.Flags().StringP("file", "f", "", "migration file")
+	if err := viper.BindPFlag("file", downCmd.Flags().Lookup("file")); err != nil {
+		log.Current.Fatal(err)
+	}
+
+	if err := downCmd.MarkFlagRequired("file"); err != nil {
+		log.Current.Fatal(err)
+	}
+
+	downCmd.Flags().BoolP("parse", "p", true, "parse migration steps before executing")
+	if err := viper.BindPFlag("parse", downCmd.Flags().Lookup("parse")); err != nil {
+		log.Current.Fatal(err)
+	}
 }
 
 func down(cmd *cobra.Command, args []string) {

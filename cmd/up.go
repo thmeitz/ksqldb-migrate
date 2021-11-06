@@ -20,17 +20,32 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/thmeitz/ksqldb-go"
+	"github.com/thmeitz/ksqldb-migrate/internal"
 )
 
 // upCmd represents the up command
 var upCmd = &cobra.Command{
 	Use:   "up",
-	Short: "up reads the yaml file and executes the up steps",
+	Short: "up reads the migration yaml file and executes the steps",
 }
 
 func init() {
 	upCmd.Run = up
 	rootCmd.AddCommand(upCmd)
+
+	upCmd.Flags().StringP("file", "f", "", "migration file")
+	if err := viper.BindPFlag("file", upCmd.Flags().Lookup("file")); err != nil {
+		log.Current.Fatal(err)
+	}
+
+	if err := upCmd.MarkFlagRequired("file"); err != nil {
+		log.Current.Fatal(err)
+	}
+
+	upCmd.Flags().BoolP("parse", "p", true, "parse migration steps before executing")
+	if err := viper.BindPFlag("parse", upCmd.Flags().Lookup("parse")); err != nil {
+		log.Current.Fatal(err)
+	}
 }
 
 func up(cmd *cobra.Command, args []string) {
@@ -39,6 +54,7 @@ func up(cmd *cobra.Command, args []string) {
 	host := viper.GetString("host")
 	user := viper.GetString("username")
 	password := viper.GetString("password")
+	file := viper.GetString("file")
 
 	options := ksqldb.Options{
 		Credentials: ksqldb.Credentials{Username: user, Password: password},
@@ -50,6 +66,15 @@ func up(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Current.Fatal(err)
 	}
+
+	log.Current.Debugw("file", log.Fields{"filename": file})
+
+	migrate, err := internal.NewMigration(file)
+	if err != nil {
+		log.Current.Fatal(err)
+	}
+
+	log.Current.Debugf("%v", migrate)
 
 	// create the DOGS_BY_SIZE table
 	// if err := ksqldb.Execute(client,

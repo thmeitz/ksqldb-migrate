@@ -10,7 +10,7 @@ go install github.com/thmeitz/ksqldb-migrate
 
 ## Usage
 
-### Migrate up
+### Create yaml file
 
 Create a `test.yaml` file like this ([or use the file in the example directory](examples/test.yaml))
 
@@ -52,13 +52,13 @@ migrate:
         DROP CONNECTOR IF EXISTS DOGS;
 ```
 
-Than run
+## Migrate Up
 
 ```bash
 ksql-migrate up -f example/test.yaml
 ```
 
-## Migrate down
+## Migrate Down
 
 ```bash
 ksql-migrate down -f example/test.yaml

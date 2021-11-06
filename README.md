@@ -104,6 +104,20 @@ ERRO[0000] parser error(s)      count=1 errors="[{1 33 missing ';' at '<EOF>'}]"
 
 Same `docker-compose` file as for [ksqldb-go](https://github.com/thmeitz/ksqldb-go/blob/main/examples/cobra-test/docker-compose.yml).
 
+## Build
+
+Only 64 Bit systems are supported.
+
+This command builds the following binaries
+
+- linux-amd64
+- darwin-amd64
+- windows-amd64
+
+```bash
+make release github.com/thmeitz/ksqldb-migrate
+```
+
 ## TODO
 
 - [ ] Better error messages for KSQLParser (ksqldb-go)

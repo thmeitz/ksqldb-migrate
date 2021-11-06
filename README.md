@@ -19,7 +19,7 @@ migrate:
   up:
     - name: create source connector dogs
       exec: |
-        CREATE SOURCE CONNECTOR DOGS WITH ('connector.class'='io.mdrogalis.voluble.VolubleSourceConnector', \
+        CREATE SOURCE CONNECTOR DOGS WITH ('connector.class'='io.mdrogalis.voluble.VolubleSourceConnector',
         'key.converter'='org.apache.kafka.connect.storage.StringConverter',
         'value.converter'='org.apache.kafka.connect.json.JsonConverter',
         'value.converter.schemas.enable'='false',

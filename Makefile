@@ -17,7 +17,7 @@ dev:
 
 build:  
 	touch internal/version.go
-	CGO_ENABLED=0 go build -ldflags "all=-X github.com/thmeitz/ksqldb-migrate/internl.version=${VERSION} -X github.com/thmeitz/ksqldb-migrate/internl.build=${BUILD} -X github.com/thmeitz/ksqldb-migrate/internl.hash=${GITHASH}" -a -installsuffix cgo -o ksqldb-migrate-${VERSION} .
+	CGO_ENABLED=0 go build -ldflags "all=-X github.com/thmeitz/ksqldb-migrate/internal.version=${VERSION} -X github.com/thmeitz/ksqldb-migrate/internal.build=${BUILD} -X github.com/thmeitz/ksqldb-migrate/internal.hash=${GITHASH}" -a -installsuffix cgo -o ksqldb-migrate-${VERSION} .
 
 test:
 	$(GOTEST) -v ./... -short

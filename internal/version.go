@@ -42,7 +42,7 @@ func (r *MigrateRelease) shortenHash() string {
 func (r *MigrateRelease) String() string {
 	splittedVersion := strings.Split(r.version, "-")
 	if len(splittedVersion) > 1 {
-		return fmt.Sprintf("%v %v", r.version, r.build)
+		return fmt.Sprintf("Copyright by %v\n%v %v", r.vendor, r.version, r.build)
 	}
-	return fmt.Sprintf("%v-%v %v", r.version, r.shortenHash(), r.build)
+	return fmt.Sprintf("Copyright by %v\n%v-%v %v", r.vendor, r.version, r.shortenHash(), r.build)
 }

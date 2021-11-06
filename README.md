@@ -96,8 +96,8 @@ You can make a preflight check if you run `up/down`.
 If there is an error you get following output:
 
 ```bash
-INFO[0000] processing                                    name="drop table DOGS_BY_SIZE" step=1
-ERRO[0000] parser error(s)                               count=1 errors="[{1 33 missing ';' at '<EOF>'}]"
+INFO[0000] processing           name="drop table DOGS_BY_SIZE" step=1
+ERRO[0000] parser error(s)      count=1 errors="[{1 33 missing ';' at '<EOF>'}]"
 ```
 
 ## Docker Compose

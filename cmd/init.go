@@ -27,7 +27,15 @@ import (
 )
 
 var (
-	lg = logrus.New()
+	lg        = logrus.New()
+	cfgFile   string
+	file      string
+	preflight bool
+	host      string
+	username  string
+	password  string
+	loglevel  string
+	logformat string
 )
 
 func setLogger() {

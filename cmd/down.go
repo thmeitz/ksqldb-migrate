@@ -16,46 +16,36 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
+	"os"
+
 	"github.com/Masterminds/log-go"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/thmeitz/ksqldb-go"
+	"github.com/thmeitz/ksqldb-migrate/internal"
 )
 
-// downCmd represents the down command
 var downCmd = &cobra.Command{
 	Use:   "down",
 	Short: "down reads the migration yaml file and executes the steps",
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := rootCmd.MarkPersistentFlagRequired("file"); err != nil {
+			log.Current.Fatal(err)
+		}
+		return nil
+	},
 }
 
 func init() {
 	downCmd.Run = down
 	rootCmd.AddCommand(downCmd)
-
-	downCmd.Flags().StringP("file", "f", "", "migration file")
-	if err := viper.BindPFlag("file", downCmd.Flags().Lookup("file")); err != nil {
-		log.Current.Fatal(err)
-	}
-
-	if err := downCmd.MarkFlagRequired("file"); err != nil {
-		log.Current.Fatal(err)
-	}
-
-	downCmd.Flags().BoolP("parse", "p", true, "parse migration steps before executing")
-	if err := viper.BindPFlag("parse", downCmd.Flags().Lookup("parse")); err != nil {
-		log.Current.Fatal(err)
-	}
 }
 
 func down(cmd *cobra.Command, args []string) {
 	setLogger()
 
-	host := viper.GetString("host")
-	user := viper.GetString("username")
-	password := viper.GetString("password")
-
 	options := ksqldb.Options{
-		Credentials: ksqldb.Credentials{Username: user, Password: password},
+		Credentials: ksqldb.Credentials{Username: username, Password: password},
 		BaseUrl:     host,
 		AllowHTTP:   true,
 	}
@@ -65,16 +55,27 @@ func down(cmd *cobra.Command, args []string) {
 		log.Current.Fatal(err)
 	}
 
-	// create the DOGS_BY_SIZE table
-	// if err := ksqldb.Execute(client,
-	// 	`
-	// 		CREATE TABLE IF NOT EXISTS DOGS_BY_SIZE AS
-	// 			SELECT DOGSIZE AS DOG_SIZE, COUNT(*) AS DOGS_CT
-	// 			FROM DOGS WINDOW TUMBLING (SIZE 15 MINUTE)
-	// 			GROdown BY DOGSIZE;
-	// `); err != nil {
-	// 	log.Current.Error(err)
-	// 	os.Exit(-1)
-	// }
+	migrate, err := internal.NewMigration(file)
+	if err != nil {
+		log.Current.Fatal(err)
+	}
+
+	for idx, step := range migrate.Down {
+		currentIndex := idx + 1
+		log.Current.Infow("processing", log.Fields{"step": currentIndex, "name": step.Name})
+		if preflight {
+			if err := client.ParseKSQL(step.Exec); err != nil {
+				log.Fatalf("error in step:%v, %v", currentIndex, errors.Unwrap(err))
+			}
+
+			log.Current.Infow("preflight check", log.Fields{"step": currentIndex, "name": step.Name, "status": "ok"})
+			if err := ksqldb.Execute(client, step.Exec); err != nil {
+				log.Current.Error(err)
+				os.Exit(-1)
+			}
+			log.Current.Infow("processed", log.Fields{"status": "ok", "step": currentIndex, "name": step.Name})
+		}
+	}
+
 	client.Close()
 }

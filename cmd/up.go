@@ -21,47 +21,31 @@ import (
 
 	"github.com/Masterminds/log-go"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/thmeitz/ksqldb-go"
 	"github.com/thmeitz/ksqldb-migrate/internal"
 )
 
-// upCmd represents the up command
 var upCmd = &cobra.Command{
 	Use:   "up",
 	Short: "up reads the migration yaml file and executes the steps",
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := rootCmd.MarkPersistentFlagRequired("file"); err != nil {
+			log.Current.Fatal(err)
+		}
+		return nil
+	},
 }
 
 func init() {
 	upCmd.Run = up
 	rootCmd.AddCommand(upCmd)
-
-	upCmd.Flags().StringP("file", "f", "", "migration file")
-	if err := viper.BindPFlag("file", upCmd.Flags().Lookup("file")); err != nil {
-		log.Current.Fatal(err)
-	}
-
-	if err := upCmd.MarkFlagRequired("file"); err != nil {
-		log.Current.Fatal(err)
-	}
-
-	upCmd.Flags().BoolP("preflight", "p", false, "preflight migration steps before executing (sql syntax check)")
-	if err := viper.BindPFlag("preflight", upCmd.Flags().Lookup("preflight")); err != nil {
-		log.Current.Fatal(err)
-	}
 }
 
 func up(cmd *cobra.Command, args []string) {
 	setLogger()
 
-	host := viper.GetString("host")
-	user := viper.GetString("username")
-	password := viper.GetString("password")
-	file := viper.GetString("file")
-	preflight := viper.GetBool("preflight")
-
 	options := ksqldb.Options{
-		Credentials: ksqldb.Credentials{Username: user, Password: password},
+		Credentials: ksqldb.Credentials{Username: username, Password: password},
 		BaseUrl:     host,
 		AllowHTTP:   true,
 	}
@@ -96,4 +80,8 @@ func up(cmd *cobra.Command, args []string) {
 	}
 
 	client.Close()
+
+	if err := rootCmd.MarkPersistentFlagRequired("file"); err != nil {
+		log.Current.Fatal(err)
+	}
 }

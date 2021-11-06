@@ -17,27 +17,20 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/Masterminds/log-go"
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
-var (
-	cfgFile string
-)
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ksqldb-migrate",
 	Short: "ksqldb-migrate migration tool for ksqlDB",
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -48,21 +41,19 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.ksqldb-migrate.yaml)")
-
-	rootCmd.PersistentFlags().String("logformat", "text", "set log format [text|json]")
-	rootCmd.PersistentFlags().String("loglevel", "debug", "set log level [info|debug|error|trace]")
-	rootCmd.PersistentFlags().String("host", "http://localhost:8088", "set the ksqldb host")
-	rootCmd.PersistentFlags().String("username", "", "set the ksqldb user name")
-	rootCmd.PersistentFlags().String("password", "", "set the ksqldb user password")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.ksqldb-migrate.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&file, "file", "f", "", "migration file")
+	rootCmd.PersistentFlags().BoolVarP(&preflight, "preflight", "p", true, "preflight migration steps before executing (sql syntax check)")
+	rootCmd.PersistentFlags().StringVarP(&logformat, "logformat", "o", "text", "set log format [text|json]")
+	rootCmd.PersistentFlags().StringVarP(&loglevel, "loglevel", "v", "debug", "set log level [info|debug|error|trace]")
+	rootCmd.PersistentFlags().StringVarP(&host, "host", "t", "http://localhost:8088", "set the ksqldb host")
+	rootCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "set the ksqldb user name")
+	rootCmd.PersistentFlags().StringVarP(&password, "password", "w", "", "set the ksqldb user password")
 
 	if err := viper.BindPFlags(rootCmd.PersistentFlags()); err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 // initConfig reads in config file and ENV variables if set.

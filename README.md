@@ -78,7 +78,30 @@ INFO[0000] processed            name="create the DOGS_BY_SIZE table" status=ok s
 ksql-migrate down -f examples/test.yaml
 ```
 
-Done.
+Output
+
+```bash
+INFO[0000] processing           name="drop table DOGS_BY_SIZE" step=1
+INFO[0000] preflight check      name="drop table DOGS_BY_SIZE" status=ok step=1
+INFO[0000] processed            name="drop table DOGS_BY_SIZE" status=ok step=1
+INFO[0000] processing           name="delete stream DOGS" step=2
+INFO[0000] preflight check      name="delete stream DOGS" status=ok step=2
+INFO[0000] processed            name="delete stream DOGS" status=ok step=2
+INFO[0000] processing           name="drop connector DOGS" step=3
+INFO[0000] preflight check      name="drop connector DOGS" status=ok step=3
+INFO[0000] processed            name="drop connector DOGS" status=ok step=3
+```
+
+## Preflight Check
+
+You can make a preflight check if you run `up/down`.
+
+If there is an error you get following output:
+
+```bash
+INFO[0000] processing                                    name="drop table DOGS_BY_SIZE" step=1
+ERRO[0000] parser error(s)                               count=1 errors="[{1 33 missing ';' at '<EOF>'}]"
+```
 
 ## Docker Compose
 

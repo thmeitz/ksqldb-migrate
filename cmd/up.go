@@ -69,14 +69,13 @@ func up(cmd *cobra.Command, args []string) {
 			if err := client.ParseKSQL(step.Exec); err != nil {
 				log.Fatalf("error in step:%v, %v", currentIndex, errors.Unwrap(err))
 			}
-
 			log.Current.Infow("preflight check", log.Fields{"step": currentIndex, "name": step.Name, "status": "ok"})
-			if err := ksqldb.Execute(client, step.Exec); err != nil {
-				log.Current.Error(err)
-				os.Exit(-1)
-			}
-			log.Current.Infow("processed", log.Fields{"status": "ok", "step": currentIndex, "name": step.Name})
 		}
+		if err := ksqldb.Execute(client, step.Exec); err != nil {
+			log.Current.Error(err)
+			os.Exit(-1)
+		}
+		log.Current.Infow("processed", log.Fields{"status": "ok", "step": currentIndex, "name": step.Name})
 	}
 
 	client.Close()

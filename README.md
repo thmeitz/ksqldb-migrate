@@ -41,15 +41,12 @@ up:
       FROM DOGS WINDOW TUMBLING (SIZE 15 MINUTE) 
       GROUP BY DOGSIZE;
 down:
-  - name: delete stream DOGS
-    exec: |
-      DROP STREAM IF EXISTS DOGS;
   - name: drop table DOGS_BY_SIZE
-    exec: |
-      DROP TABLE IF EXISTS DOGS_BY_SIZE
+    exec: DROP TABLE IF EXISTS DOGS_BY_SIZE;
+  - name: delete stream DOGS
+    exec: DROP STREAM IF EXISTS DOGS;
   - name: drop connector DOGS
-    exec: |
-      DROP CONNECTOR IF EXISTS DOGS;
+    exec: DROP CONNECTOR IF EXISTS DOGS;
 ```
 
 ## Migrate Up

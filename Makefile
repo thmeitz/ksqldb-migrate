@@ -1,3 +1,8 @@
+VERSION=`git describe --tags`
+BUILD=`date +%FT%T%z`
+GITHASH=`git rev-parse HEAD`
+GIT_BRANCH=`git branch --show-current`
+
 GO=go
 GOCOVER=$(GO) tool cover
 GOTEST=$(GO) test
@@ -11,7 +16,8 @@ dev:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.42.1
 
 build:  
-	go build .
+	touch internal/version.go
+	CGO_ENABLED=0 go build -ldflags "all=-X github.com/thmeitz/ksqldb-migrate/internl.version=${VERSION} -X github.com/thmeitz/ksqldb-migrate/internl.build=${BUILD} -X github.com/thmeitz/ksqldb-migrate/internl.hash=${GITHASH}" -a -installsuffix cgo -o ksqldb-migrate-${VERSION} .
 
 test:
 	$(GOTEST) -v ./... -short

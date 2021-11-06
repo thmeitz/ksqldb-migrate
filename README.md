@@ -75,17 +75,7 @@ ksql-migrate down -f examples/test.yaml
 
 Output
 
-```bash
-INFO[0000] processing           name="drop table DOGS_BY_SIZE" step=1
-INFO[0000] preflight check      name="drop table DOGS_BY_SIZE" status=ok step=1
-INFO[0000] processed            name="drop table DOGS_BY_SIZE" status=ok step=1
-INFO[0000] processing           name="delete stream DOGS" step=2
-INFO[0000] preflight check      name="delete stream DOGS" status=ok step=2
-INFO[0000] processed            name="delete stream DOGS" status=ok step=2
-INFO[0000] processing           name="drop connector DOGS" step=3
-INFO[0000] preflight check      name="drop connector DOGS" status=ok step=3
-INFO[0000] processed            name="drop connector DOGS" status=ok step=3
-```
+![](docs/ksqldb-migrate-down-output.png)
 
 ## Preflight Check
 

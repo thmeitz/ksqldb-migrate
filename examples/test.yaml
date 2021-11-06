@@ -25,7 +25,7 @@ up:
       GROUP BY DOGSIZE;
 down:
   - name: drop table DOGS_BY_SIZE
-    exec: DROP TABLE IF EXISTS DOGS_BY_SIZE;
+    exec: DROP TABLE IF EXISTS DOGS_BY_SIZE
   - name: delete stream DOGS
     exec: DROP STREAM IF EXISTS DOGS;
   - name: drop connector DOGS

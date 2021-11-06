@@ -85,6 +85,10 @@ If there is an error you get following output:
 
 ![](docs/ksqldb-migrate-parser-error.png)
 
+Since the KSQLParser can find more than one error, the errors are in a slice.
+
+The first number gives the row number, the second number the column number followed by the parser message.
+
 ## Docker Compose
 
 Same `docker-compose` file as for [ksqldb-go](https://github.com/thmeitz/ksqldb-go/blob/main/examples/cobra-test/docker-compose.yml).

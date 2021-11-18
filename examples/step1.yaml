@@ -1,0 +1,17 @@
+---
+up:
+  - name: create source connector dogs
+    exec: |
+      CREATE SOURCE CONNECTOR DOGS WITH ('connector.class'='io.mdrogalis.voluble.VolubleSourceConnector',
+      'key.converter'='org.apache.kafka.connect.storage.StringConverter',
+      'value.converter'='org.apache.kafka.connect.json.JsonConverter',
+      'value.converter.schemas.enable'='false',
+      'genkp.dogs.with'='#{Internet.uuid}',
+      'genv.dogs.name.with'='#{Dog.name}',
+      'genv.dogs.dogsize.with'='#{Dog.size}',
+      'genv.dogs.age.with'='#{Dog.age}',
+      'topic.dogs.throttle.ms'=1000 
+      );
+down:
+  - name: drop connector DOGS
+    exec: DROP CONNECTOR IF EXISTS DOGS;

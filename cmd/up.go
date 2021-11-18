@@ -22,6 +22,8 @@ import (
 	"github.com/Masterminds/log-go"
 	"github.com/spf13/cobra"
 	"github.com/thmeitz/ksqldb-go"
+	"github.com/thmeitz/ksqldb-go/net"
+	"github.com/thmeitz/ksqldb-go/parser"
 	"github.com/thmeitz/ksqldb-migrate/internal"
 )
 
@@ -44,13 +46,13 @@ func init() {
 func up(cmd *cobra.Command, args []string) {
 	setLogger()
 
-	options := ksqldb.Options{
-		Credentials: ksqldb.Credentials{Username: username, Password: password},
+	options := net.Options{
+		Credentials: net.Credentials{Username: username, Password: password},
 		BaseUrl:     host,
 		AllowHTTP:   true,
 	}
 
-	client, err := ksqldb.NewClient(options, log.Current)
+	client, err := ksqldb.NewClientWithOptions(options)
 	if err != nil {
 		log.Current.Fatal(err)
 	}
@@ -66,15 +68,17 @@ func up(cmd *cobra.Command, args []string) {
 		currentIndex := idx + 1
 		log.Current.Infow("processing", log.Fields{"step": currentIndex, "name": step.Name})
 		if preflight {
-			if err := client.ParseKSQL(step.Exec); err != nil {
+			if err := parser.ParseSql(step.Exec); err != nil {
 				log.Fatalf("error in step:%v, %v", currentIndex, errors.Unwrap(err))
 			}
 			log.Current.Infow("preflight check", log.Fields{"step": currentIndex, "name": step.Name, "status": "ok"})
 		}
-		if err := ksqldb.Execute(client, step.Exec); err != nil {
+		var execResult *ksqldb.KsqlResponseSlice
+		if execResult, err = client.Execute(ksqldb.ExecOptions{KSql: step.Exec}); err != nil {
 			log.Current.Error(err)
 			os.Exit(-1)
 		}
+		log.Current.Infof("%+v", execResult)
 		log.Current.Infow("processed", log.Fields{"status": "ok", "step": currentIndex, "name": step.Name})
 	}
 

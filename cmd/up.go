@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"context"
 	"errors"
 	"os"
 
@@ -74,7 +75,7 @@ func up(cmd *cobra.Command, args []string) {
 			log.Current.Infow("preflight check", log.Fields{"step": currentIndex, "name": step.Name, "status": "ok"})
 		}
 		var execResult *ksqldb.KsqlResponseSlice
-		if execResult, err = client.Execute(ksqldb.ExecOptions{KSql: step.Exec}); err != nil {
+		if execResult, err = client.Execute(context.Background(), ksqldb.ExecOptions{KSql: step.Exec}); err != nil {
 			log.Current.Error(err)
 			os.Exit(-1)
 		}

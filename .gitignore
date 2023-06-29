@@ -16,3 +16,4 @@
 ksqldb-migrate
 migrations
 ksqldb-migrate.yaml
+secreport.json
